@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>UNISPOT — Marketplace estudiantil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14213D;
+    --ink-soft:#2C3D63;
+    --paper:#FBF7EE;
+    --paper-2:#F1EADA;
+    --gold:#FFB627;
+    --gold-deep:#E89B00;
+    --red:#C1272D;
+    --line:#DED4BC;
+    --text:#1B1B1B;
+    --text-soft:#5B5747;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-sizing: border-box;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.brand{font-family:'Space Grotesk',sans-serif;}
+
+  header{
+    position:sticky; top:0; z-index:20;
+    padding-top: env(safe-area-inset-top, 0px);
+    background:var(--ink);
+    border-bottom:3px solid var(--gold);
+  }
+  .nav-inner{
+    max-width:1080px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 20px;
+  }
+  .brand{color:var(--paper); font-size:22px; font-weight:700; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;}
+  .brand .dot{width:9px;height:9px;background:var(--gold);border-radius:50%;display:inline-block;}
+  .nav-sub{color:#B9C2DA; font-size:12.5px; margin-top:2px;}
+  .nav-tabs{display:flex; gap:6px;}
+  .nav-tab{
+    background:transparent; border:none; color:#C7CEE3;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:14px;
+    padding:8px 14px; border-radius:8px; cursor:pointer;
+  }
+  .nav-tab.active{background:var(--gold); color:var(--ink);}
+  .nav-tab:not(.active):hover{background:var(--ink-soft); color:var(--paper);}
+
+  .hero{
+    max-width:1080px; margin:0 auto; padding:52px 20px 36px;
+  }
+  .hero h1{
+    font-size:clamp(28px,4.5vw,46px);
+    line-height:1.08; margin:0 0 14px; max-width:640px;
+    color:var(--ink);
+  }
+  .hero p{
+    font-size:17px; color:var(--text-soft); max-width:520px; margin:0 0 22px;
+  }
+  .search-bar{
+    display:flex; gap:10px; max-width:560px; flex-wrap:wrap;
+  }
+  .search-bar input{
+    flex:1; min-width:180px;
+    padding:13px 16px; border-radius:10px; border:1.5px solid var(--line);
+    font-family:'Inter',sans-serif; font-size:15px; background:#fff;
+  }
+  .search-bar input:focus{outline:2px solid var(--gold); outline-offset:1px;}
+  .btn-primary{
+    background:var(--ink); color:var(--paper); border:none;
+    padding:13px 22px; border-radius:10px; font-weight:600; font-size:15px;
+    cursor:pointer; font-family:'Inter',sans-serif;
+  }
+  .btn-primary:hover{background:var(--ink-soft);}
+  .stats{display:flex; gap:28px; margin-top:30px; flex-wrap:wrap;}
+  .stat b{display:block; font-family:'Space Grotesk',sans-serif; font-size:22px; color:var(--ink);}
+  .stat span{font-size:12.5px; color:var(--text-soft);}
+
+  main{max-width:1080px; margin:0 auto; padding:0 20px 70px;}
+
+  .section-head{display:flex; align-items:baseline; justify-content:space-between; margin:8px 0 18px; flex-wrap:wrap; gap:10px;}
+  .section-head h2{font-size:23px; margin:0; color:var(--ink);}
+  .section-head p{margin:2px 0 0; font-size:14px; color:var(--text-soft);}
+  .add-btn{
+    background:var(--gold); color:var(--ink); border:none;
+    padding:10px 16px; border-radius:9px; font-weight:700; font-size:13.5px;
+    cursor:pointer; white-space:nowrap;
+  }
+  .add-btn:hover{background:var(--gold-deep);}
+
+  .filter-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:20px;}
+  .chip{
+    border:1.5px solid var(--line); background:#fff; color:var(--text-soft);
+    padding:7px 13px; border-radius:20px; font-size:13px; cursor:pointer; font-weight:500;
+  }
+  .chip.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px;}
+
+  .card{
+    background:#fff; border:1px solid var(--line); border-radius:12px;
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .card-media{
+    height:120px; display:flex; align-items:center; justify-content:center;
+    font-size:38px; color:#fff;
+  }
+  .card-body{padding:14px; display:flex; flex-direction:column; gap:6px; flex:1;}
+  .card-tag{
+    font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.3px;
+    color:var(--ink-soft); background:var(--paper-2); align-self:flex-start;
+    padding:3px 8px; border-radius:6px;
+  }
+  .card-body h3{font-size:15.5px; margin:2px 0 0; line-height:1.3;}
+  .card-body .meta{font-size:13px; color:var(--text-soft); margin:0;}
+  .card-foot{display:flex; align-items:center; justify-content:space-between; margin-top:auto; padding-top:8px;}
+  .price{font-family:'Space Grotesk',sans-serif; font-weight:700; color:var(--ink); font-size:16px;}
+  .price.free{color:#3E7B4F;}
+  .contact-btn{
+    background:transparent; border:1.5px solid var(--ink); color:var(--ink);
+    padding:6px 12px; border-radius:8px; font-size:12.5px; font-weight:600; cursor:pointer;
+  }
+  .contact-btn:hover{background:var(--ink); color:#fff;}
+
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  .modal-overlay{
+    display:none; position:fixed; inset:0; background:rgba(20,33,61,0.55);
+    z-index:50; align-items:flex-start; justify-content:center;
+    padding:60px 16px; overflow-y:auto;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--paper); border-radius:14px; padding:26px 24px 22px;
+    width:100%; max-width:380px; position:relative; border:1px solid var(--line);
+  }
+  .modal-close{
+    position:absolute; top:12px; right:14px; background:none; border:none;
+    font-size:22px; line-height:1; color:var(--text-soft); cursor:pointer;
+  }
+  .modal-tabs{display:flex; gap:6px; margin-bottom:18px; background:var(--paper-2); padding:4px; border-radius:10px;}
+  .modal-tab{
+    flex:1; background:none; border:none; padding:9px 0; border-radius:8px;
+    font-family:'Inter',sans-serif; font-weight:600; font-size:13.5px; color:var(--text-soft); cursor:pointer;
+  }
+  .modal-tab.active{background:var(--ink); color:var(--paper);}
+  .auth-form{display:none; flex-direction:column; gap:13px;}
+  .auth-form.active{display:flex;}
+  .auth-form label{font-size:13px; font-weight:600; color:var(--ink-soft); display:flex; flex-direction:column; gap:5px;}
+  .auth-form input, .auth-form select{
+    padding:11px 12px; border-radius:9px; border:1.5px solid var(--line);
+    font-family:'Inter',sans-serif; font-size:14.5px; background:#fff; color:var(--text);
+  }
+  .auth-form input:focus, .auth-form select:focus{outline:2px solid var(--gold); outline-offset:1px;}
+  .form-note{font-size:12.5px; color:var(--text-soft); text-align:center; margin:2px 0 0;}
+  .form-note a{color:var(--red); font-weight:600; text-decoration:none;}
+  .form-note a:hover{text-decoration:underline;}
+
+  footer{
+    border-top:1px solid var(--line); padding:26px 20px; text-align:center;
+    color:var(--text-soft); font-size:13px;
+  }
+
+  @media (max-width:640px){
+    .nav-inner{flex-direction:column; align-items:flex-start; gap:10px;}
+    .nav-tabs{width:100%; overflow-x:auto;}
+  }
+
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#171A22; --paper-2:#1F2330; --text:#EDEAE1; --text-soft:#A9A497;
+      --line:#333747; --ink:#0E1424; --ink-soft:#20304F;
+    }
+    :root:not([data-theme="light"]) .card{background:#1D212C;}
+    :root:not([data-theme="light"]) .search-bar input{background:#1D212C; color:var(--text);}
+  }
+  :root[data-theme="dark"]{
+    --paper:#171A22; --paper-2:#1F2330; --text:#EDEAE1; --text-soft:#A9A497;
+    --line:#333747; --ink:#0E1424; --ink-soft:#20304F;
+  }
+  :root[data-theme="dark"] .card{background:#1D212C;}
+  :root[data-theme="dark"] .search-bar input{background:#1D212C; color:var(--text);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <div>
+      <div class="brand"><span class="dot"></span>UNISPOT</div>
+      <div class="nav-sub">Marketplace de la Universidad Nacional Mayor de San Marcos</div>
+    </div>
+    <div class="nav-tabs" id="navTabs">
+      <button class="nav-tab active" data-panel="vitrina">Vitrina</button>
+      <button class="nav-tab" data-panel="libros">Libros</button>
+      <button class="nav-tab" data-panel="servicios">Servicios</button>
+      <button class="nav-tab" id="openAuthBtn" style="background:var(--gold);color:var(--ink);">Ingresar / Crear perfil</button>
+    </div>
+  </div>
+</header>
+
+<div class="modal-overlay" id="authOverlay">
+  <div class="modal">
+    <button class="modal-close" id="closeAuthBtn">&times;</button>
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-form="login">Iniciar sesión</button>
+      <button class="modal-tab" data-form="register">Crear perfil</button>
+    </div>
+
+    <form class="auth-form active" id="loginForm">
+      <label>Correo institucional
+        <input type="email" placeholder="tunombre@unmsm.edu.pe" required>
+      </label>
+      <label>Contraseña
+        <input type="password" placeholder="••••••••" required>
+      </label>
+      <button type="submit" class="btn-primary" style="width:100%;">Ingresar</button>
+      <p class="form-note">¿No tienes cuenta? <a href="#" data-switch="register">Crea tu perfil aquí</a></p>
+    </form>
+
+    <form class="auth-form" id="registerForm">
+      <label>Nombre completo
+        <input type="text" placeholder="Nombres y apellidos" required>
+      </label>
+      <label>Correo institucional
+        <input type="email" placeholder="tunombre@unmsm.edu.pe" required>
+      </label>
+      <label>Facultad
+        <select required>
+          <option value="">Selecciona tu facultad</option>
+          <option>Letras y Ciencias Humanas</option>
+          <option>Derecho y Ciencia Política</option>
+          <option>Ciencias Sociales</option>
+          <option>Educación</option>
+          <option>Ciencias Económicas</option>
+          <option>Ciencias Administrativas</option>
+          <option>Ciencias Contables</option>
+          <option>Psicología</option>
+          <option>Medicina</option>
+          <option>Odontología</option>
+          <option>Farmacia y Bioquímica</option>
+          <option>Medicina Veterinaria</option>
+          <option>Química e Ingeniería Química</option>
+          <option>Ciencias Biológicas</option>
+          <option>Ciencias Físicas</option>
+          <option>Ciencias Matemáticas</option>
+          <option>Ingeniería Geológica, Minera, Metalúrgica y Geográfica</option>
+          <option>Ingeniería Electrónica y Eléctrica</option>
+          <option>Ingeniería de Sistemas e Informática</option>
+          <option>Ingeniería Industrial</option>
+          </select>
+      </label>
+      <label>Ciclo actual
+        <input type="text" placeholder="Ej. 6to ciclo" required>
+      </label>
+      <label>Contraseña
+        <input type="password" placeholder="Crea una contraseña" required>
+      </label>
+      <button type="submit" class="btn-primary" style="width:100%;">Crear mi perfil</button>
+      <p class="form-note">¿Ya tienes cuenta? <a href="#" data-switch="login">Inicia sesión</a></p>
+    </form>
+  </div>
+</div>
+
+<div class="hero">
+  <h1>Compra, vende y alquila entre estudiantes de San Marcos</h1>
+  <p>Un solo lugar para todo lo que circula en la universidad: productos, libros, apuntes y servicios de otros sanmarquinos.</p>
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Busca un producto, libro o servicio...">
+    <button class="btn-primary" onclick="applyFilter()">Buscar</button>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>3</b><span>categorías activas</span></div>
+    <div class="stat"><b>100% San Marcos</b><span>solo estudiantes verificados</span></div>
+    <div class="stat"><b>S/0</b><span>comisión en el piloto</span></div>
+  </div>
+</div>
+
+<main>
+
+  <!-- VITRINA -->
+  <section class="panel active" id="vitrina">
+    <div class="section-head">
+      <div>
+        <h2>Vitrina</h2>
+        <p>Cualquier estudiante puede publicar un producto para vender o alquilar.</p>
+      </div>
+      <button class="add-btn">+ Publicar producto</button>
+    </div>
+    <div class="filter-row">
+      <button class="chip active">Todos</button>
+      <button class="chip">Electrónica</button>
+      <button class="chip">Ropa</button>
+      <button class="chip">Comida</button>
+      <button class="chip">Alquiler</button>
+    </div>
+    <div class="grid" id="vitrinaGrid"></div>
+  </section>
+
+  <!-- LIBROS -->
+  <section class="panel" id="libros">
+    <div class="section-head">
+      <div>
+        <h2>Libros y apuntes</h2>
+        <p>Separatas, resúmenes, libros de texto y exámenes resueltos de ciclos anteriores.</p>
+      </div>
+      <button class="add-btn">+ Publicar libro</button>
+    </div>
+    <div class="filter-row">
+      <button class="chip active">Todos</button>
+      <button class="chip">Ciencias e Ingeniería</button>
+      <button class="chip">Ciencias de la Salud</button>
+      <button class="chip">Humanidades y Sociales</button>
+      <button class="chip">Apuntes digitales</button>
+    </div>
+    <div class="grid" id="librosGrid"></div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section class="panel" id="servicios">
+    <div class="section-head">
+      <div>
+        <h2>Servicios entre estudiantes</h2>
+        <p>Audiovisual, diseño, tutorías, trámites y más, ofrecidos por compañeros de todas las facultades.</p>
+      </div>
+      <button class="add-btn">+ Ofrecer servicio</button>
+    </div>
+    <div class="filter-row">
+      <button class="chip active">Todos</button>
+      <button class="chip">Audiovisual</button>
+      <button class="chip">Tutorías</button>
+      <button class="chip">Diseño</button>
+      <button class="chip">Trámites</button>
+    </div>
+    <div class="grid" id="serviciosGrid"></div>
+  </section>
+
+</main>
+
+<footer>UNISPOT — proyecto de emprendimiento estudiantil, UNMSM · demo ilustrativa, sin datos reales</footer>
+
+<script>
+const COLORS = ['#14213D','#C1272D','#3E7B4F','#8B5E3C','#5B4B8A','#1F6F78'];
+function pick(i){ return COLORS[i % COLORS.length]; }
+
+const vitrina = [
+  {tag:'Electrónica', icon:'🎧', name:'Audífonos inalámbricos', meta:'Casi nuevos · Pabellón A', price:'S/45'},
+  {tag:'Alquiler', icon:'🧮', name:'Calculadora científica', meta:'Alquiler por examen · Devolución el mismo día', price:'S/3 /día'},
+  {tag:'Ropa', icon:'👔', name:'Terno formal talla M', meta:'Ideal para sustentaciones y entrevistas', price:'S/60'},
+  {tag:'Comida', icon:'🍱', name:'Menú saludable por encargo', meta:'Entrega en tu facultad · Lun a Vie', price:'S/8'},
+  {tag:'Electrónica', icon:'🔌', name:'Extensión + cargador USB-C', meta:'Para salones sin tomacorriente cerca', price:'S/15'},
+  {tag:'Alquiler', icon:'📷', name:'Cámara para exposiciones', meta:'Alquiler por día, incluye trípode', price:'S/20 /día'},
+];
+
+const libros = [
+  {tag:'Humanidades y Sociales', icon:'📗', name:'Contabilidad Financiera I — resumen', meta:'Ciclo 2025-II · PDF + impreso', price:'S/12'},
+  {tag:'Ciencias e Ingeniería', icon:'📘', name:'Matemática I — banco de ejercicios', meta:'Con soluciones paso a paso', price:'S/10'},
+  {tag:'Apuntes digitales', icon:'📝', name:'Apuntes de Pensamiento Crítico', meta:'Todo el ciclo, formato digital', price:'S/6'},
+  {tag:'Humanidades y Sociales', icon:'📙', name:'Introducción al Derecho — separata', meta:'Fotocopia anillada', price:'S/9'},
+  {tag:'Ciencias de la Salud', icon:'🩺', name:'Anatomía — atlas y fichas de repaso', meta:'Impreso a color, poco uso', price:'S/25'},
+  {tag:'Apuntes digitales', icon:'📝', name:'Fichas de repaso — parciales', meta:'Formato para imprimir', price:'S/5'},
+];
+
+const servicios = [
+  {tag:'Audiovisual', icon:'🎬', name:'Grabación y edición de exposiciones', meta:'Entrega en 48h · con subtítulos', price:'S/35'},
+  {tag:'Tutorías', icon:'🎓', name:'Asesoría en Matemática I', meta:'Sesión de 1 hora, presencial o virtual', price:'S/20 /h'},
+  {tag:'Diseño', icon:'🎨', name:'Diseño de infografías para trabajos', meta:'Entrega en 24h', price:'S/18'},
+  {tag:'Trámites', icon:'📄', name:'Apoyo con constancias y trámites en la sede central', meta:'Te ahorras la cola', price:'S/10'},
+  {tag:'Audiovisual', icon:'🎙️', name:'Locución para videos académicos', meta:'Voz clara, entrega en audio limpio', price:'S/15'},
+  {tag:'Diseño', icon:'🖊️', name:'Diagramación de tesis en Word', meta:'Formato APA / normas de tu facultad', price:'S/40'},
+];
+
+function renderGrid(containerId, items){
+  const el = document.getElementById(containerId);
+  el.innerHTML = items.map((it,i)=>`
+    <div class="card">
+      <div class="card-media" style="background:${pick(i)}">${it.icon}</div>
+      <div class="card-body">
+        <span class="card-tag">${it.tag}</span>
+        <h3>${it.name}</h3>
+        <p class="meta">${it.meta}</p>
+        <div class="card-foot">
+          <span class="price">${it.price}</span>
+          <button class="contact-btn">Contactar</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+renderGrid('vitrinaGrid', vitrina);
+renderGrid('librosGrid', libros);
+renderGrid('serviciosGrid', servicios);
+
+document.querySelectorAll('.nav-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    document.getElementById(tab.dataset.panel).classList.add('active');
+  });
+});
+
+document.querySelectorAll('.filter-row').forEach(row=>{
+  row.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      row.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+    });
+  });
+});
+
+// Modal de ingreso / registro
+const authOverlay = document.getElementById('authOverlay');
+document.getElementById('openAuthBtn').addEventListener('click', ()=> authOverlay.classList.add('open'));
+document.getElementById('closeAuthBtn').addEventListener('click', ()=> authOverlay.classList.remove('open'));
+authOverlay.addEventListener('click', (e)=>{ if(e.target === authOverlay) authOverlay.classList.remove('open'); });
+
+function switchAuthForm(target){
+  document.querySelectorAll('.modal-tab').forEach(t=>t.classList.toggle('active', t.dataset.form === target));
+  document.querySelectorAll('.auth-form').forEach(f=>f.classList.remove('active'));
+  document.getElementById(target === 'login' ? 'loginForm' : 'registerForm').classList.add('active');
+}
+document.querySelectorAll('.modal-tab').forEach(t=> t.addEventListener('click', ()=> switchAuthForm(t.dataset.form)));
+document.querySelectorAll('[data-switch]').forEach(a=> a.addEventListener('click', (e)=>{
+  e.preventDefault(); switchAuthForm(a.dataset.switch);
+}));
+
+document.getElementById('registerForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  alert('Perfil creado (demo). En la versión real esto guardaría tu cuenta de estudiante.');
+  authOverlay.classList.remove('open');
+});
+document.getElementById('loginForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  alert('Sesión iniciada (demo).');
+  authOverlay.classList.remove('open');
+});
+
+function applyFilter(){
+  const term = document.getElementById('searchInput').value.toLowerCase().trim();
+  if(!term) return;
+  if([...vitrina,...libros,...servicios].some(it=>it.name.toLowerCase().includes(term))){
+    // basic demo behavior: just keep as-is, real filtering would go here
+  }
+}
+</script>
+
+</body>
+</html>
